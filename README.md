@@ -1,56 +1,54 @@
-# Welcome to your Expo app 👋
+# Google Nearby Demo
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This Expo app demonstrates a simple nearby peer-to-peer flow using `expo-nearby-connections`.
 
-## Get started
+The app has two tabs:
 
-1. Install dependencies
+- `Main Node`: advertises the device, accepts an incoming request, and shows the shared chat log.
+- `Other Node`: discovers nearby main nodes, requests a connection, and sends messages after the request is accepted.
 
-   ```bash
-   npm install
-   ```
+## Important constraints
 
-2. Start the app
+- Test on two physical devices.
+- Use the same platform on both devices. Android-to-iOS is not supported by the library.
+- Use a development build. This native module is not available in Expo Go.
+- The web build renders, but nearby discovery and messaging are intentionally unavailable there.
 
-   ```bash
-   npx expo start
-   ```
+## Setup
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+1. Install dependencies.
 
 ```bash
-npm run reset-project
+bun install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Generate native projects after config changes.
 
-### Other setup steps
+```bash
+npx expo prebuild
+```
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+3. Run a development build on the target platform.
 
-## Learn more
+```bash
+npx expo run:android
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npx expo run:ios
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Demo flow
 
-## Join the community
+1. Open `Main Node` on the first device.
+2. Tap `Start main node` and grant the requested permissions.
+3. Open `Other Node` on the second device.
+4. Tap `Start scanning`, wait for the first device to appear, then tap `Connect`.
+5. Accept the invitation on the first device.
+6. Send custom text messages from either side.
 
-Join our community of developers creating universal apps.
+## Native configuration included
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- `expo-nearby-connections` plugin with Bonjour and local-network iOS configuration.
+- `react-native-permissions` plugin for iOS Bluetooth permission support.
+- Runtime Bluetooth, location, and nearby-device permission requests in the app.
